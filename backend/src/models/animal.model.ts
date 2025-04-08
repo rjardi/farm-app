@@ -1,13 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/db'; // Importa la configuración de la base de datos
-import Farm from './farm';
+import sequelize from '../config/database'; // Importa la configuración de la base de datos
+import Farm from './farm.model';
 
 // Definimos el modelo para la entidad 'Animal'
 class Animal extends Model {
   public id!: number;
   public name!: string;
   public breed!: string;
-  public farmId!: number; // Relación con la granja (foránea)
+  public id_farm!: number; // Relación con la granja (foránea)
 
   // Timestamps
   public readonly createdAt!: Date;
@@ -17,7 +17,7 @@ class Animal extends Model {
 Animal.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -29,23 +29,22 @@ Animal.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    farmId: {
-      type: DataTypes.INTEGER,
+    id_farm: {
+      type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       references: {
         model: 'farms', // El modelo relacionado (granja)
         key: 'id', // La clave primaria de la granja
       },
+      onDelete: 'CASCADE',
     },
   },
   {
     sequelize, // Pasamos la conexión a la base de datos
     modelName: 'Animal',
     tableName: 'animals', // Nombre de la tabla en la base de datos
+    timestamps: false,
   }
 );
-
-// Establecer la relación entre 'Animal' y 'Farm'
-Animal.belongsTo(Farm, { foreignKey: 'farmId' });
 
 export default Animal;

@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/db'; // Importa la configuración de la base de datos
+import sequelize from '../config/database'; // Importa la configuración de la base de datos
+import Animal from './animal.model';
 
 // Definimos el modelo para la entidad 'Farm'
 class Farm extends Model {
@@ -15,16 +16,16 @@ class Farm extends Model {
 Farm.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER.UNSIGNED,
       primaryKey: true,
       autoIncrement: true,
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
     location: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(100),
       allowNull: false,
     },
   },
@@ -32,6 +33,7 @@ Farm.init(
     sequelize, // Pasamos la conexión a la base de datos
     modelName: 'Farm',
     tableName: 'farms', // Nombre de la tabla en la base de datos
+    timestamps: false,
   }
 );
 

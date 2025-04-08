@@ -6,6 +6,8 @@ dotenv.config();
 
 const dialect = process.env.DB_DIALECT as 'mysql' | 'postgres' | 'mssql' | 'sqlite' | undefined;
 // Establecer la conexión con la base de datos
+// const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306;
+
 const sequelize = new Sequelize({
   dialect: dialect, // Puedes usar 'postgres', 'mariadb', etc.
   host: process.env.DB_HOST, // La dirección del servidor de la base de datos
@@ -15,12 +17,12 @@ const sequelize = new Sequelize({
 });
 
 // Verificar si la conexión se establece correctamente
-sequelize.authenticate()
-  .then(() => {
-    console.log('Conexión establecida correctamente.');
-  })
-  .catch((error) => {
-    console.error('Error al conectar a la base de datos:', error);
-  });
+// sequelize.authenticate()
+//   .then(() => {
+//     console.log('Conexión establecida correctamente.');
+//   })
+//   .catch((error) => {
+//     console.error('Error al conectar a la base de datos:', error);
+//   });
 
 export default sequelize;
