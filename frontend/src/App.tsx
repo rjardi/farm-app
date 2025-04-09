@@ -1,8 +1,8 @@
 import './App.css'
-// import FarmForm from './components/FarmForm'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import FarmPage  from './pages/FarmPage';
-import FarmFormPage from './pages/FarmFormPage';
+import FarmsPage  from './pages/FarmsPage';
+// import FarmForm from './components/farm/FarmForm';
+import Navbar from './components/nav/Navbar';
 
 function App() {
 
@@ -14,14 +14,15 @@ function App() {
       </main> */}
 
       <Router>
-      <main className="p-6">
-        {/* <h1 className="text-2xl font-bold mb-4">FarmApp</h1> */}
-        <Routes>
-          <Route path="/" element={<FarmPage  />} />
-          <Route path="/farms/new" element={<FarmFormPage />} />
-          <Route path="/farms/edit/:id" element={<FarmFormPage />} />
-        </Routes>
-      </main>
+        <Navbar/>
+          <main className="p-6">
+            {/* <h1 className="text-2xl font-bold mb-4">FarmApp</h1> */}
+            <Routes>
+              <Route path="/" element={<FarmsPage  />} />
+              {/* <Route path="/farms/new" element={<FarmForm />} />
+              <Route path="/farms/edit/:id" element={<FarmForm />} /> */}
+            </Routes>
+          </main>
     </Router>
 
     </>

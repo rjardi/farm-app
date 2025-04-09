@@ -1,7 +1,7 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { FarmModel } from '../models/farmModel';
+import { FarmModel } from '../../models/farmModel';
 
 const FarmForm: React.FC = () => {
 
@@ -32,10 +32,6 @@ const FarmForm: React.FC = () => {
       return;
     }
 
-    // const newFarm:FarmModel={
-    //   name: farmData.name,
-    //   location: farmData.location
-    // }
     console.log('Enviando datos:', farmData);
     try {
       const response = await axios.post(`${DB_HOST}/api/farms`, farmData);

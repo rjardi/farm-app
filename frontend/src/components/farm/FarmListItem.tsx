@@ -1,5 +1,5 @@
 // src/components/FarmListItem.tsx
-import { FarmModel } from '../models/farmModel';
+import { FarmModel } from '../../models/farmModel';
 
 interface Props {
   farm: FarmModel;
