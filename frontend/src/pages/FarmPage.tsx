@@ -6,17 +6,25 @@ import FarmList from '../components/FarmList';
 import { Link } from 'react-router-dom';
 import {API_URL} from '../config.ts';
 import { List, LayoutGrid } from 'lucide-react';
+import Spinner from '../components/Spinner';
 
 
 const FarmPage = () => {
   const [farms, setFarms] = useState<FarmModel[]>([]);
-  const [viewMode, setViewMode] = useState<'card' | 'list'>('card');
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'card' | 'list'>('list');
 
-  useEffect(() => {
+  const fetchFarms = async ()=>{
+    setLoading(true);
     axios
       .get(`${API_URL}/api/farms`)
       .then((res) => setFarms(res.data))
-      .catch((err) => console.error('Error al obtener granjas', err));
+      .catch((err) => console.error('Error al obtener granjas', err))
+      .finally(() => setLoading(false));
+  }
+  
+  useEffect(() => {
+    fetchFarms();
   }, []);
 
   return (
@@ -25,17 +33,18 @@ const FarmPage = () => {
         <h1 className="text-2xl font-bold">Listado de Granjas</h1>
       </div>
 
-      <div className="flex gap-5 flex-row-reverse mb-4" items-end>
+      <div className="flex gap-5 flex-row-reverse mb-4">
         <Link
           to="/farms/new"
-          className="bg-green-900 text-white hover:bg-green-600 px-4 py-2 rounded"
+          className="text-blue-500 hover:underline"
         >
-           ➕ Agregar Granja
+          <button className="text-green-500 hover:underline mr-2">+ Agregar Granja</button>
+           
         </Link>
         <button
           onClick={() => setViewMode('card')}
           className={`px-4 py-1 rounded ${
-            viewMode === 'card' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            viewMode === 'card' ? 'bg-blue-500 !border-white' : ''
           }`}
         >
           {<LayoutGrid />}
@@ -43,15 +52,20 @@ const FarmPage = () => {
         <button
           onClick={() => setViewMode('list')}
           className={`px-4 py-1 rounded ${
-            viewMode === 'list' ? 'bg-blue-500 text-white' : 'bg-gray-200'
+            viewMode === 'list' ? 'bg-blue-500 !border-white' : ''
           }`}
         >
           {<List />}
         </button>
 
       </div>
+      
+      {farms.length==0 && !loading? (
+          <p><strong>No hay elementos en la lista</strong></p>
+      ):(
+        loading ? <Spinner /> : <FarmList farms={farms} viewMode={viewMode} onDelete={fetchFarms}/>
+      )}
 
-      <FarmList farms={farms} viewMode={viewMode} />
     </section>
   );
 };
