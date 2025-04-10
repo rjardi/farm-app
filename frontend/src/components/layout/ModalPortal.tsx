@@ -2,14 +2,21 @@ import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 interface ModalPortalProps {
+  /** Contenido del modal */
   children: ReactNode;
+  /** Función que se ejecuta al cerrar el modal */
   onClose: () => void;
 }
 
+/**
+ * Componente que renderiza un modal en un portal fuera del árbol principal de React.
+ * Detecta la tecla Escape para cerrar el modal y se monta en el nodo con id `modal-root`.
+ */
 const ModalPortal = ({ children, onClose }: ModalPortalProps) => {
   const modalRoot = document.getElementById('modal-root');
 
   useEffect(() => {
+    // Escucha la tecla Escape para cerrar el modal
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
     };
@@ -18,6 +25,7 @@ const ModalPortal = ({ children, onClose }: ModalPortalProps) => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  // Si el nodo modal-root no existe, no se renderiza nada
   if (!modalRoot) return null;
 
   return ReactDOM.createPortal(

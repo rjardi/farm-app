@@ -1,32 +1,32 @@
-import './App.css'
+import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import FarmsPage  from './pages/FarmsPage';
-// import FarmForm from './components/farm/FarmForm';
+import FarmsPage from './pages/FarmsPage';
 import Navbar from './components/nav/Navbar';
+import AnimalsPage from './pages/AnimalsPage';
 
+/**
+ * Componente principal de la aplicación.
+ * Define el enrutamiento general y estructura básica con navegación.
+ * 
+ */
 function App() {
-
   return (
-    <>
-      {/* <main>
-        <h1>FarmApp</h1>
-        <FarmForm/>
-      </main> */}
+    <Router>
+      {/* Barra de navegación persistente */}
+      <Navbar />
 
-      <Router>
-        <Navbar/>
-          <main className="p-6">
-            {/* <h1 className="text-2xl font-bold mb-4">FarmApp</h1> */}
-            <Routes>
-              <Route path="/" element={<FarmsPage  />} />
-              {/* <Route path="/farms/new" element={<FarmForm />} />
-              <Route path="/farms/edit/:id" element={<FarmForm />} /> */}
-            </Routes>
-          </main>
+      {/* Contenido principal de cada ruta */}
+      <main className="p-6">
+        <Routes>
+          {/* Página de gestión de granjas */}
+          <Route path="/" element={<FarmsPage />} />
+
+          {/* Página de gestión de animales */}
+          <Route path="/animals" element={<AnimalsPage />} />
+        </Routes>
+      </main>
     </Router>
-
-    </>
-  )
+  );
 }
 
-export default App
+export default App;

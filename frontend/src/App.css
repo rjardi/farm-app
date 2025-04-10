@@ -1,15 +1,17 @@
+/* Estilos base para el contenedor principal de la app */
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  /* padding: 2rem; */
   text-align: center;
 }
 
-.react-confirm-alert-body>h1{
+/* Personalización del título del modal de confirmación (react-confirm-alert) */
+.react-confirm-alert-body > h1 {
   font-size: 2em;
   text-align: center;
 }
 
-.react-confirm-alert-button-group{
+/* Alineación de los botones del modal de confirmación hacia la derecha */
+.react-confirm-alert-button-group {
   justify-content: end !important;
 }

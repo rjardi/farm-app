@@ -2,38 +2,25 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FarmModel } from '../../models/farmModel.ts';
-import {API_URL} from '../../config.ts';
+import { API_URL } from '../../config.ts';
 import { toast } from 'react-toastify';
-// import { Link } from 'react-router-dom';
-import { deleteFarm } from '../../services/farm.service.ts';
+import { deleteById } from '../../services/api.service.ts';
 import { showConfirmDialog } from '../../utils/confirmDialog.ts';
 
 interface FarmFormProps {
   initialData?: FarmModel;
 }
 
-const FarmForm = ({ initialData}:FarmFormProps) => {
-  // const { id } = useParams();
-  const id=initialData?.id;
+const FarmForm = ({ initialData }: FarmFormProps) => {
+  const id = initialData?.id;
   const navigate = useNavigate();
-  // const isEditMode = !!id;
   const isEditMode = !!initialData?.id;
+
   const [farm, setFarm] = useState<FarmModel>({ name: '', location: '' });
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  // Cargar datos si es edición
-  // useEffect(() => {
-  //   if (isEditMode) {
-  //     setLoading(true);
-  //     axios
-  //       .get(`${API_URL}/api/farms/${id}`)
-  //       .then((res) => setFarm(res.data))
-  //       .catch((err) => console.error('Error al cargar la granja', err))
-  //       .finally(() => setLoading(false));
-  //   }
-  // }, [id]);
-
+  // Al cargar el formulario, si hay datos iniciales se rellenan
   useEffect(() => {
     if (initialData) {
       setLoading(true);
@@ -42,45 +29,52 @@ const FarmForm = ({ initialData}:FarmFormProps) => {
     }
   }, [initialData]);
 
+  /**
+   * Maneja el cambio en los campos del formulario
+   * @param e Evento de cambio de input
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFarm({ ...farm, [name]: value });
   };
 
+  /**
+   * Maneja el envío del formulario para crear o editar una granja
+   * @param e Evento de formulario
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     try {
       if (isEditMode) {
         await axios.put(`${API_URL}/api/farms/${id}`, farm);
-        toast.success('Granja actualizada con éxito', {autoClose:2000});
-        // onSuccess();
-        // onClose();
+        toast.success('Granja actualizada con éxito', { autoClose: 2000 });
       } else {
         await axios.post(`${API_URL}/api/farms`, farm);
-        toast.success('Granja creada con éxito', {autoClose:2000});
+        toast.success('Granja creada con éxito', { autoClose: 2000 });
       }
-      // navigate('/');
     } catch (err) {
       console.error('Error al guardar la granja', err);
+      toast.error('Error al guardar la granja', { autoClose: 2000 });
     } finally {
       setSubmitting(false);
     }
   };
 
+  /**
+   * Muestra confirmación y elimina la granja si se acepta
+   */
   const handleDelete = async () => {
     showConfirmDialog(
-        '¿Estás seguro de que deseas eliminar esta granja?',
-        '',
-      async ()=>{
-        // Acción al confirmar
+      '¿Estás seguro de que deseas eliminar esta granja?',
+      '',
+      async () => {
         try {
-          await deleteFarm(Number(id));
-          // await axios.delete(`${API_URL}/api/farms/${id}`);
-          toast.success('Granja eliminada correctamente',{autoClose:2000});
+          await deleteById(Number(id), 'farm');
+          toast.success('Granja eliminada correctamente', { autoClose: 2000 });
           navigate('/');
         } catch (err) {
-          toast.error('Error al eliminar la granja',{autoClose:2000});
+          toast.error('Error al eliminar la granja', { autoClose: 2000 });
         }
       }
     );

@@ -1,28 +1,23 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 
-// Cargar las variables de entorno desde el archivo .env
+// Cargar variables de entorno desde el archivo .env
 dotenv.config();
 
+// Se define el tipo de base de datos a partir de la variable de entorno DB_DIALECT.
+// Sequelize soporta distintos dialectos, por eso se tipa de forma específica.
 const dialect = process.env.DB_DIALECT as 'mysql' | 'postgres' | 'mssql' | 'sqlite' | undefined;
-// Establecer la conexión con la base de datos
-// const dbPort = process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 3306;
 
+// Crear una instancia de Sequelize con la configuración necesaria
+// Estas opciones se definen a partir de variables de entorno para mantener la seguridad y flexibilidad
 const sequelize = new Sequelize({
-  dialect: dialect, // Puedes usar 'postgres', 'mariadb', etc.
-  host: process.env.DB_HOST, // La dirección del servidor de la base de datos
-  username: process.env.DB_USER, // El usuario de la base de datos
-  password: process.env.DB_PASSWORD, // La contraseña del usuario
-  database: process.env.DB_NAME, // El nombre de la base de datos
+  dialect: dialect, // Motor de base de datos a utilizar
+  host: process.env.DB_HOST, // Dirección del host de la base de datos
+  username: process.env.DB_USER, // Usuario autorizado
+  password: process.env.DB_PASSWORD, // Contraseña del usuario
+  database: process.env.DB_NAME, // Nombre de la base de datos
+  // puerto no especificado explícitamente, Sequelize toma el valor por defecto según el dialecto
 });
 
-// Verificar si la conexión se establece correctamente
-// sequelize.authenticate()
-//   .then(() => {
-//     console.log('Conexión establecida correctamente.');
-//   })
-//   .catch((error) => {
-//     console.error('Error al conectar a la base de datos:', error);
-//   });
-
+// Exportamos la instancia de Sequelize para usarla en modelos y otros módulos de base de datos.
 export default sequelize;

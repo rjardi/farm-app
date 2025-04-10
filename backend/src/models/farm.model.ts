@@ -1,28 +1,31 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/database'; // Importa la configuración de la base de datos
-import Animal from './animal.model';
+import Animal from './animal.model'; // Puede utilizarse para definir relaciones si se desea
 
-// Definimos el modelo para la entidad 'Farm'
+/**
+ * Modelo Sequelize que representa la entidad "Farm"
+ */
 class Farm extends Model {
   public id!: number;
   public name!: string;
   public location!: string;
 
-  // Timestamps
+  // Timestamps (aunque no los usamos porque están desactivados)
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
+// Inicialización del modelo con sus atributos y configuración
 Farm.init(
   {
     id: {
       type: DataTypes.INTEGER.UNSIGNED,
-      primaryKey: true,
-      autoIncrement: true,
+      primaryKey: true, // Establece el campo como clave primaria
+      autoIncrement: true, // El valor se autoincrementa
     },
     name: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
+      type: DataTypes.STRING(100), // Limita el tamaño del nombre a 100 caracteres
+      allowNull: false, // Campo obligatorio
     },
     location: {
       type: DataTypes.STRING(100),
@@ -30,10 +33,10 @@ Farm.init(
     },
   },
   {
-    sequelize, // Pasamos la conexión a la base de datos
-    modelName: 'Farm',
-    tableName: 'farms', // Nombre de la tabla en la base de datos
-    timestamps: false,
+    sequelize, // Instancia de Sequelize configurada
+    modelName: 'Farm', // Nombre interno del modelo
+    tableName: 'farms', // Nombre de la tabla real en la base de datos
+    timestamps: false, // No se generan automáticamente campos createdAt y updatedAt
   }
 );
 
